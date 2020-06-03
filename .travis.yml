@@ -10,7 +10,7 @@ script:
   - go test -v
 
   # Build
-  - CGO_ENABLED=0 GOARCH=amd64 go build -o main
+  
   - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USER --password-stdin
   - docker build -f Dockerfile -t simonangerbauer/ex04:latest ./
   - docker tag simonangerbauer/ex04:latest simonangerbauer/ex04:$TRAVIS_COMMIT
