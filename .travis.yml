@@ -1,0 +1,18 @@
+os: linux
+
+language: go
+
+go:
+  - 1.14.x
+
+script:
+  # Test
+  - go test -v
+
+  # Build
+  - CGO_ENABLED=0 GOARCH=amd64 go build -o main
+  - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USER --password-stdin
+  - docker build -f Dockerfile -t simonangerbauer/go-mux:latest ./
+  - docker tag simonangerbauer/go-mux:latest simonangerbauer/go-mux:$TRAVIS_COMMIT
+  - docker push simonangerbauer/go-mux:latest
+  - docker push simonangerbauer/go-mux:$TRAVIS_COMMIT
